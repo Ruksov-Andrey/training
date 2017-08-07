@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
     config.vm.define "server2" do |server2|
       server2.vm.hostname = "server2"
       server2.vm.network "private_network", ip: "172.20.20.11"
-	  server2.vm.provision :shell, :inline => "echo '172.20.20.10 server1.local' >> /etc/hosts"
+	  server2.vm.provision :shell, :inline => "echo '172.20.20.10 server1' >> /etc/hosts"
     end   
 	
 	
