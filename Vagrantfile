@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 #Run with the command VAGRANT UP --PROVISION
+#My first vagrantfile
 
 
 Vagrant.configure(2) do |config|
