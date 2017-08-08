@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
       server1.vm.network "private_network", ip: "172.20.20.10"
 	  server1.vm.provision :shell, :inline => "
 	  echo '172.20.20.11 server2' >> /etc/hosts
-	  sudo yum install git -y
+	  yum install git -y
       git clone https://github.com/Ruksov-Andrey/training/
 	  cd /home/vagrant/training
 	  git checkout task1
