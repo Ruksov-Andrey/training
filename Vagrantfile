@@ -6,7 +6,6 @@
 
 
 Vagrant.configure(2) do |config|
-
 	config.vm.box = "bertvv/centos72"
 	config.vm.boot_timeout = 500000
 	config.vm.provider "virtualbox" do |vb|
