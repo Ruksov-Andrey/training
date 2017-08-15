@@ -35,4 +35,7 @@ Vagrant.configure(2) do |config|
 	tomcat2.vm.provision :shell, path: "tomcat.sh"
 	tomcat2.vm.provision :shell, path: "index2.sh"
 	end
+
+	config.vm.provision :shell, path: "firewall.sh"
+	
 end

@@ -3,8 +3,7 @@
 echo "Setup APACHE"
 yum install httpd -y
 systemctl enable httpd
-systemctl start httpd 
-systemctl stop firewalld 
+
 
 cp /vagrant/mod_jk.so /etc/httpd/modules/
 
@@ -19,5 +18,6 @@ echo "JkLogLevel info" >> /etc/httpd/conf/httpd.conf
 echo "JkMount /unit2* lb" >> /etc/httpd/conf/httpd.conf
 
 echo "Restart APACHE"
-service httpd restart
+systemctl start httpd 
+
 
