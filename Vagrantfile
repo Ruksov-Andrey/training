@@ -1,41 +1,33 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-#Run with the command VAGRANT UP --PROVISION
+# Every Vagrant development environment requires a box. You can search for
+# boxes at https://atlas.hashicorp.com/search.
 
 
+BOX_IMAGE = "bertvv/centos72"
+TOMCAT_COUNT = 2
 
-Vagrant.configure(2) do |config|
-	config.vm.box = "bertvv/centos72"
-	config.vm.boot_timeout = 500000
-	config.vm.provider "virtualbox" do |vb|
-	vb.gui = true
-	end
+Vagrant.configure("2") do |config|
+  config.vm.define "apache" do |subconfig|
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.hostname = "apache"
+	subconfig.vm.network :private_network, ip: "10.0.0.10"
+	subconfig.vm.network "forwarded_port", guest: 22, host: 2230
+	subconfig.vm.network "forwarded_port", guest: 80, host: 9090
+    subconfig.vm.provision :shell, path: "apache.sh"
+  end
+  
+  (1..TOMCAT_COUNT).each do |i|
+    config.vm.define "tomacat#{i}" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.hostname = "tomcat#{i}"
+      subconfig.vm.network :private_network, ip: "10.0.0.#{i + 10}"
+    end
+  end
 
-  config.vm.define "apache" do |apache|
-	apache.vm.hostname = "apache"
-	apache.vm.network "private_network", ip: "172.20.20.12"
-	apache.vm.network "forwarded_port", guest: 22, host: 2230
-	apache.vm.network "forwarded_port", guest: 80, host: 9090
-	apache.vm.provision :shell, path: "apache.sh"
-	end
+  # Stop firewall on all machines  
+  config.vm.provision :shell, path: "firewall.sh"
 
-  config.vm.define "tomcat1" do |tomcat1|
-	tomcat1.vm.hostname = "tomcat1"
-	tomcat1.vm.network "forwarded_port", guest: 22, host: 2210
-	tomcat1.vm.network "private_network", ip: "172.20.20.10"  
-	tomcat1.vm.provision :shell, path: "tomcat.sh"
-	tomcat1.vm.provision :shell, path: "index1.sh"
-	end
-	
-  config.vm.define "tomcat2" do |tomcat2|
-	tomcat2.vm.hostname = "tomcat2"
-	tomcat2.vm.network "private_network", ip: "172.20.20.11"
-	tomcat2.vm.network "forwarded_port", guest: 22, host: 2220
-	tomcat2.vm.provision :shell, path: "tomcat.sh"
-	tomcat2.vm.provision :shell, path: "index2.sh"
-	end
-
-	config.vm.provision :shell, path: "firewall.sh"
-	
 end
+
