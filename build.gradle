@@ -10,35 +10,28 @@ def String versionNumber
 task incVersion << {
   ext {
     versionFile = file('gradle.properties')
-  }
+ }
 
   if(versionFile.canRead()) {
 
 
-    versionFile.withReader { reader ->
-      versionNumber = reader.readLine()
+    versionFile.withReader { 
+    reader -> versionNumber = reader.readLine()
     }
     def (major, minor, patch) = versionNumber.tokenize('.')
     println major + "." + minor + "." + patch
     def temp = patch.toInteger() + 1
     versionNumber = "${major}.${minor}.${temp}"
     println versionNumber
-  } else {
+    new File("gradle.properties").write(versionNumber)
+    new File("./build/resources/main/greeting.txt").write(versionNumber)
+
+ }  else {
     throw new GradleException( 'Can not read file.' )
   }
 }
 
-task copyVersion << {
-  def v = versionNumber
-  new File("greetings.txt").write(v)
-}
-
-copyVersion.dependsOn incVersion
-
-
-
-
-
+tasks.war.dependsOn(incVersion)
 
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
