@@ -56,5 +56,6 @@ node('master') {
         git tag release
         git push https://${git_USERNAME}:${git_PASSWORD}@github.com/Ruksov-Andrey/training.git master'''
         }
-    }
+  
+  }
 }
