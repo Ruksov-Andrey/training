@@ -15,7 +15,7 @@ task (incVersion) {
     props.setProperty('BuildNumber', buildnum.toString())
     props.store(propsFile.newWriter(), null)
     props.load(propsFile.newDataInputStream())
-  }
+    }
 }
 
 task (copyVersion) {
@@ -26,11 +26,8 @@ task (copyVersion) {
     props.load(propsFile.newDataInputStream())  
     String majorV = props.getProperty('MajorVersion')
     String buildN = props.getProperty('BuildNumber')
-    println (majorV)
-    println (buildN)
-    println (nfile)
     nfile.write(" Version: ${majorV} Build: ${buildN} ")
-  }
+    }
 }
 
 war.dependsOn copyVersion
