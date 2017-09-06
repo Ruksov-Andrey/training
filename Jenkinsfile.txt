@@ -47,4 +47,3 @@ node('master') {
     }
 }
 
-
