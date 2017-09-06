@@ -1,2 +1,2 @@
-# training
+# training devops
 My first repository
