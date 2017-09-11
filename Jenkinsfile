@@ -25,7 +25,7 @@ node('TOMCAT1') {
         sh "wget http://172.20.20.12:8081/nexus/content/repositories/snapshots/task3/${ver}/task3.war"
         sh 'cp -f /home/jenkins/workspace/task3/task3.war /usr/share/tomcat/webapps'
     }
-        sleep 15               
+    sleep 15               
     stage('VEREFY DEPLOY'){
         println 'Build: '+verB
         def verify = httpRequest 'http://172.20.20.10:8080/task3'
@@ -51,8 +51,8 @@ node('TOMCAT2') {
         sh "wget http://172.20.20.11:8081/nexus/content/repositories/snapshots/task3/${ver}/task3.war"
         sh 'cp -f /home/jenkins/workspace/task3/task3.war /usr/share/tomcat/webapps'
     }
-        sleep 15
-    stage('VEREFY DEPLOY'){
+    sleep 15
+    stage('VERIFY DEPLOY'){
         println 'Build: '+verB
         def verify = httpRequest 'http://172.20.20.10:8080/task3'
         if(verify.content.contains('Build: '+verB)){
@@ -60,7 +60,7 @@ node('TOMCAT2') {
         }
         else {
             echo "--------------------DEPLOY FAILED---------------------------"
-        currentBuild.result = 'ABORTED'
+        currentBuild.result = 'DEPLOY FAILED'
         }
     }
     stage('START TOMCAT2'){
