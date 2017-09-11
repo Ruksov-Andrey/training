@@ -24,9 +24,9 @@ node('TOMCAT1') {
         httpRequest responseHandle: 'NONE', url: 'http://172.20.20.12/jkmanager?cmd=update&from=list&w=lb&sw=tomcat1&vwa=1'
     }
     stage('Copy WAR in webapps') {
-        sh 'rm -r /home/jenkins/workspace/sptask3/*'
+        sh 'rm -r /home/jenkins/workspace/task3/*'
         sh "wget http://172.20.20.12:8081/nexus/content/repositories/snapshots/task3/${ver}/task3.war"
-        sh 'cp -f /home/jenkins/workspace/sptask3/task3.war /usr/share/tomcat/webapps'
+        sh 'cp -f /home/jenkins/workspace/task3/task3.war /usr/share/tomcat/webapps'
     }
         sleep 15
                
@@ -51,9 +51,9 @@ node('TOMCAT2') {
         httpRequest responseHandle: 'NONE', url: 'http://172.20.20.12/jkmanager?cmd=update&from=list&w=lb&sw=tomcat1&vwa=1'
     }
     stage('Copy WAR in webapps') {
-        sh 'rm -r /home/jenkins/workspace/sptask3/*'
+        sh 'rm -r /home/jenkins/workspace/task3/*'
         sh "wget http://172.20.20.11:8081/nexus/content/repositories/snapshots/task3/${ver}/task3.war"
-        sh 'cp -f /home/jenkins/workspace/sptask3/task3.war /usr/share/tomcat/webapps'
+        sh 'cp -f /home/jenkins/workspace/task3/task3.war /usr/share/tomcat/webapps'
     }
         sleep 15
                
