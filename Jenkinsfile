@@ -61,7 +61,7 @@ node('TOMCAT2') {
             echo "--------------------DEPLOY SUCCESS---------------------------"
         }
         else {
-            echo "--------------------DEPLOY FAILED---------------------------"
+            echo "--------------------DEPLOY FAILED----------------------------"
         currentBuild.result = 'ABORTED'
         }
     }
