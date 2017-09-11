@@ -2,11 +2,9 @@ node('master') {
     stage('Git clone'){
        git url: 'https://github.com/Ruksov-Andrey/training.git', branch: 'task3'
     }
-
     stage('Build') {
         sh 'chmod +x gradlew && ./gradlew incVersion'
         sh 'chmod +x gradlew && ./gradlew build'}
-
     stage ('Upload to nexus') {
         withCredentials([usernameColonPassword(credentialsId: '4f1db46f-1b2a-43d7-9b72-79574e449aaf', variable: 'NEXUS_CREDENTIALS')]) {
             def props = readProperties  file: './gradle.properties'
@@ -61,7 +59,7 @@ node('TOMCAT2') {
             echo "--------------------DEPLOY SUCCESS---------------------------"
         }
         else {
-            echo "--------------------DEPLOY FAILED----------------------------"
+            echo "--------------------DEPLOY FAILED---------------------------"
         currentBuild.result = 'ABORTED'
         }
     }
