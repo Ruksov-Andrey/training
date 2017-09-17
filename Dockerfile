@@ -1,4 +1,4 @@
-FROM tomcat:8.0.46-jre7
+FROM tomcat:8.0.46-jre8
 ARG NEXUS=http://172.20.20.12:8081/nexus/service/local/repositories/snapshots/content/task4/
 ARG WEBAPPS=/usr/local/tomcat/webapps
 ARG VERSION=1.0.1
