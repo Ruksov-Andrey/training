@@ -9,7 +9,7 @@ node('master') {
    }
     stage ('Upload to nexus') {
         withCredentials([usernameColonPassword(credentialsId: '1ddc8f7e-7ef5-40b6-9eca-2c28b06df6fd', variable: 'NEXUS_CREDENTIALS')]) {
-       //Please install    https://wiki.jenkins.io/display/JENKINS/Pipeline+Utility+Steps+Plugin           
+            //Please install:    https://wiki.jenkins.io/display/JENKINS/Pipeline+Utility+Steps+Plugin           
             def props = readProperties  file: './gradle.properties'
             ver = props.MajorVersion+'.'+props.BuildNumber
             verB = props.BuildNumber
@@ -29,12 +29,12 @@ node('master') {
            echo "--------------------UPDATE SERVICE for SWARM mode---------------------------"
            sh "docker pull 172.20.20.12:5000/task4:${ver}"
            sh "docker service update --detach=true --image 172.20.20.12:5000/task4:${ver}  tomcat"
+        }
+           else {
+               echo "--------------------CREATE SERVICE for SWARM mode---------------------------"
+               sh "docker pull 172.20.20.12:5000/task4:${ver}"
+               sh "docker service create -detach=true --name=tomcat --mode global --publish 80:8080 172.20.20.12:5000/task4:${ver}"
            }
-        else {
-            echo "--------------------CREATE SERVICE for SWARM mode---------------------------"
-            sh "docker pull 172.20.20.12:5000/task4:${ver}"
-            sh "docker service create -detach=true --name=tomcat --mode global --publish 80:8080 172.20.20.12:5000/task4:${ver}"
-            }
     }
     stage('VERIFY DEPLOY'){
         println 'Build: '+verB
