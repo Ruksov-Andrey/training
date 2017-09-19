@@ -21,16 +21,15 @@ node('master') {
         sh "docker push 172.20.20.12:5000/task4:${ver}"
     }
     stage ('Run on SWARM SERVICE') {
-       def r = sh script: 'docker service ls', returnStdout: true
-       println r
-       if(r.contains('tomcat')) {
-           echo "--------------------UPDATE SERVICE for SWARM mode---------------------------"
-           sh "docker service update --detach=true --image 172.20.20.12:5000/task4:${ver}  tomcat"
+        def r = sh script: 'docker service ls', returnStdout: true
+        println r
+        if(r.contains('tomcat')) {
+            echo "--------------------UPDATE SERVICE for SWARM mode---------------------------"
+            sh "docker service update --detach=true --image 172.20.20.12:5000/task4:${ver}  tomcat"
+        } else {
+              echo "--------------------CREATE SERVICE for SWARM mode---------------------------"
+              sh "docker service create -detach=true --name=tomcat --mode global --publish 80:8080 172.20.20.12:5000/task4:${ver}"
         }
-           else {
-               echo "--------------------CREATE SERVICE for SWARM mode---------------------------"
-               sh "docker service create -detach=true --name=tomcat --mode global --publish 80:8080 172.20.20.12:5000/task4:${ver}"
-           }
     }
     stage('VERIFY DEPLOY'){
         println 'Build: '+verB
@@ -38,9 +37,9 @@ node('master') {
         def verify = httpRequest 'http://172.20.20.12/task4'
         if(verify.content.contains('Build: '+verB)){
             echo "--------------------DEPLOY SUCCESS---------------------------"
-        }
-        else {
-            echo "--------------------DEPLOY FAILED----------------------------"            
+        } else {
+            echo "--------------------DEPLOY FAILED----------------------------"
+            error 'DEPLOY FAILED'              
         }
     }
     stage('push changes to task4 branch') {
