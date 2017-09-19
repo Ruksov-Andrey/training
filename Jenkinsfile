@@ -17,20 +17,18 @@ node('master') {
         }
     }
     stage ('Build image') {
-        sh "docker build --build-arg VERSION=${ver} -t localhost:5000/task4:${ver} ."
-        sh "docker push localhost:5000/task4:${ver}"
+        sh "docker build --build-arg VERSION=${ver} -t 172.20.20.12:5000/task4:${ver} ."
+        sh "docker push 172.20.20.12:5000/task4:${ver}"
     }
     stage ('Run on SWARM SERVICE') {
        def r = sh script: 'docker service ls', returnStdout: true
        println r
        if(r.contains('tomcat')) {
            echo "--------------------UPDATE SERVICE for SWARM mode---------------------------"
-           sh "docker pull 172.20.20.12:5000/task4:${ver}"
            sh "docker service update --detach=true --image 172.20.20.12:5000/task4:${ver}  tomcat"
         }
            else {
                echo "--------------------CREATE SERVICE for SWARM mode---------------------------"
-               sh "docker pull 172.20.20.12:5000/task4:${ver}"
                sh "docker service create -detach=true --name=tomcat --mode global --publish 80:8080 172.20.20.12:5000/task4:${ver}"
            }
     }
@@ -42,8 +40,7 @@ node('master') {
             echo "--------------------DEPLOY SUCCESS---------------------------"
         }
         else {
-            echo "--------------------DEPLOY FAILED----------------------------"
-            currentBuild.result = 'DEPLOY FAILED'
+            echo "--------------------DEPLOY FAILED----------------------------"            
         }
     }
     stage('push changes to task4 branch') {
