@@ -16,3 +16,15 @@ end
 describe port(80), :skip do
   it { should_not be_listening }
 end
+
+
+
+describe docker.containers do
+  its('images') { should_not include 'u12:latest' }
+end
+
+describe docker.images do
+  its('repositories') { should_not include 'inssecure_image' }
+end
+
+
